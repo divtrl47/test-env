@@ -14,19 +14,16 @@ docker-compose up -d
 ```
 This launches three Kafka brokers listening on local ports `19092`, `19093` and `19094`.
 
-## Producer
-Send messages to a topic (optionally specifying a key to control the partition):
-```bash
-go run producer.go --topic test --count 5
-```
-You can change the broker list with `--brokers` and provide a `--key` argument.
+## Interactive client
 
-## Consumer
-Consume messages from a topic as part of a consumer group:
+Run a single client that both consumes from and produces to a topic. Messages
+you type are sent to Kafka while all received messages are printed to the
+console:
 ```bash
-go run consumer.go --topic test --group example
+go run client.go --topic test --group example
 ```
-Multiple consumers with the same group id will share partitions.
+Use `--brokers` to override the broker list or `--key` to set a key for all
+produced messages. The client will keep running until you press `Ctrl+C`.
 
 Stop the cluster with:
 ```bash
