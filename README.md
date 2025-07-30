@@ -20,7 +20,7 @@ Run a single client that both consumes from and produces to a topic. Messages
 you type are sent to Kafka while all received messages are printed to the
 console:
 ```bash
-go run client.go --topic test --group example
+go run ./cmd/client --topic test --group example
 ```
 Use `--brokers` to override the broker list or `--key` to set a key for all
 produced messages. The client will keep running until you press `Ctrl+C`.
