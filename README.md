@@ -4,7 +4,7 @@ This project provides a small Kafka cluster using Docker Compose and simple Go c
 
 ## Prerequisites
 - Docker and Docker Compose
-- Go 1.20+
+- Go 1.24+
 
 ## Running the cluster
 
