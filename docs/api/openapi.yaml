@@ -1,0 +1,45 @@
+openapi: 3.0.3
+info:
+  title: Example Tournament API
+  version: '1.0.0'
+paths:
+  /tournaments:
+    get:
+      summary: List tournaments
+      responses:
+        '200':
+          description: List of tournaments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tournament'
+  /teams/{teamId}/tasks:
+    get:
+      summary: List tasks for a team with progress
+      parameters:
+        - name: teamId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of team tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamTask'
+components:
+  schemas:
+    Task:
+      $ref: './components/schemas/Task.yaml'
+    TeamTask:
+      $ref: './components/schemas/TeamTask.yaml'
+    Team:
+      $ref: './components/schemas/Team.yaml'
+    Tournament:
+      $ref: './components/schemas/Tournament.yaml'

@@ -1,0 +1,20 @@
+# TeamTask represents progress of a team for a particular task
+
+type: object
+properties:
+  task:
+    $ref: './Task.yaml'
+  status:
+    type: string
+    description: Current status of the task for the team
+    enum: [pending, in_progress, solved]
+  attempts:
+    type: integer
+    description: Number of attempts made by the team
+  openedHints:
+    type: array
+    description: Indexes of hints opened by the team
+    items:
+      type: integer
+required:
+  - task

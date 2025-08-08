@@ -1,0 +1,16 @@
+# Tournament schema including tasks with team progress information
+
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  name:
+    type: string
+  tasks:
+    type: array
+    items:
+      $ref: './TeamTask.yaml'
+required:
+  - id
+  - name
