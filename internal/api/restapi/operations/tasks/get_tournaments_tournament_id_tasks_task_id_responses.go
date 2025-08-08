@@ -17,7 +17,7 @@ import (
 const GetTournamentsTournamentIDTasksTaskIDOKCode int = 200
 
 /*
-GetTournamentsTournamentIDTasksTaskIDOK Task details
+GetTournamentsTournamentIDTasksTaskIDOK Team task details
 
 swagger:response getTournamentsTournamentIdTasksTaskIdOK
 */
@@ -26,7 +26,7 @@ type GetTournamentsTournamentIDTasksTaskIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Task `json:"body,omitempty"`
+	Payload *models.TeamTask `json:"body,omitempty"`
 }
 
 // NewGetTournamentsTournamentIDTasksTaskIDOK creates GetTournamentsTournamentIDTasksTaskIDOK with default headers values
@@ -36,13 +36,13 @@ func NewGetTournamentsTournamentIDTasksTaskIDOK() *GetTournamentsTournamentIDTas
 }
 
 // WithPayload adds the payload to the get tournaments tournament Id tasks task Id o k response
-func (o *GetTournamentsTournamentIDTasksTaskIDOK) WithPayload(payload *models.Task) *GetTournamentsTournamentIDTasksTaskIDOK {
+func (o *GetTournamentsTournamentIDTasksTaskIDOK) WithPayload(payload *models.TeamTask) *GetTournamentsTournamentIDTasksTaskIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get tournaments tournament Id tasks task Id o k response
-func (o *GetTournamentsTournamentIDTasksTaskIDOK) SetPayload(payload *models.Task) {
+func (o *GetTournamentsTournamentIDTasksTaskIDOK) SetPayload(payload *models.TeamTask) {
 	o.Payload = payload
 }
 

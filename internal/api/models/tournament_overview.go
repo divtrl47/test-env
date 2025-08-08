@@ -30,7 +30,7 @@ type TournamentOverview struct {
 
 	// Teams ordered by tournament results
 	// Required: true
-	Teams []*Team `json:"teams"`
+	Teams []*TeamOverview `json:"teams"`
 }
 
 // Validate validates this tournament overview

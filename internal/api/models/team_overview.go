@@ -15,10 +15,10 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// Team team
+// TeamOverview team overview
 //
-// swagger:model Team
-type Team struct {
+// swagger:model TeamOverview
+type TeamOverview struct {
 
 	// Number of completed tasks
 	// Required: true
@@ -46,11 +46,11 @@ type Team struct {
 
 	// tasks
 	// Required: true
-	Tasks []*TeamTask `json:"tasks"`
+	Tasks []*TeamTaskOverview `json:"tasks"`
 }
 
-// Validate validates this team
-func (m *Team) Validate(formats strfmt.Registry) error {
+// Validate validates this team overview
+func (m *TeamOverview) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCompleted(formats); err != nil {
@@ -87,7 +87,7 @@ func (m *Team) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validateCompleted(formats strfmt.Registry) error {
+func (m *TeamOverview) validateCompleted(formats strfmt.Registry) error {
 
 	if err := validate.Required("completed", "body", m.Completed); err != nil {
 		return err
@@ -96,7 +96,7 @@ func (m *Team) validateCompleted(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validateID(formats strfmt.Registry) error {
+func (m *TeamOverview) validateID(formats strfmt.Registry) error {
 
 	if err := validate.Required("id", "body", m.ID); err != nil {
 		return err
@@ -105,7 +105,7 @@ func (m *Team) validateID(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validateLogin(formats strfmt.Registry) error {
+func (m *TeamOverview) validateLogin(formats strfmt.Registry) error {
 
 	if err := validate.Required("login", "body", m.Login); err != nil {
 		return err
@@ -114,7 +114,7 @@ func (m *Team) validateLogin(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validateName(formats strfmt.Registry) error {
+func (m *TeamOverview) validateName(formats strfmt.Registry) error {
 
 	if err := validate.Required("name", "body", m.Name); err != nil {
 		return err
@@ -123,7 +123,7 @@ func (m *Team) validateName(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validatePenalty(formats strfmt.Registry) error {
+func (m *TeamOverview) validatePenalty(formats strfmt.Registry) error {
 
 	if err := validate.Required("penalty", "body", m.Penalty); err != nil {
 		return err
@@ -132,7 +132,7 @@ func (m *Team) validatePenalty(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validatePlace(formats strfmt.Registry) error {
+func (m *TeamOverview) validatePlace(formats strfmt.Registry) error {
 
 	if err := validate.Required("place", "body", m.Place); err != nil {
 		return err
@@ -141,7 +141,7 @@ func (m *Team) validatePlace(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Team) validateTasks(formats strfmt.Registry) error {
+func (m *TeamOverview) validateTasks(formats strfmt.Registry) error {
 
 	if err := validate.Required("tasks", "body", m.Tasks); err != nil {
 		return err
@@ -168,8 +168,8 @@ func (m *Team) validateTasks(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validate this team based on the context it is used
-func (m *Team) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validate this team overview based on the context it is used
+func (m *TeamOverview) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.contextValidateTasks(ctx, formats); err != nil {
@@ -182,7 +182,7 @@ func (m *Team) ContextValidate(ctx context.Context, formats strfmt.Registry) err
 	return nil
 }
 
-func (m *Team) contextValidateTasks(ctx context.Context, formats strfmt.Registry) error {
+func (m *TeamOverview) contextValidateTasks(ctx context.Context, formats strfmt.Registry) error {
 
 	for i := 0; i < len(m.Tasks); i++ {
 
@@ -208,7 +208,7 @@ func (m *Team) contextValidateTasks(ctx context.Context, formats strfmt.Registry
 }
 
 // MarshalBinary interface implementation
-func (m *Team) MarshalBinary() ([]byte, error) {
+func (m *TeamOverview) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -216,8 +216,8 @@ func (m *Team) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *Team) UnmarshalBinary(b []byte) error {
-	var res Team
+func (m *TeamOverview) UnmarshalBinary(b []byte) error {
+	var res TeamOverview
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

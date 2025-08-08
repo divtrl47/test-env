@@ -7,8 +7,6 @@ package models
 
 import (
 	"context"
-	"encoding/json"
-	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -21,14 +19,6 @@ import (
 // swagger:model Task
 type Task struct {
 
-	// attempts
-	// Required: true
-	Attempts []*Attempt `json:"attempts"`
-
-	// hints
-	// Required: true
-	Hints []*Hint `json:"hints"`
-
 	// Task identifier
 	// Required: true
 	ID *int64 `json:"id"`
@@ -36,11 +26,6 @@ type Task struct {
 	// Task name
 	// Required: true
 	Name *string `json:"name"`
-
-	// Task status
-	// Required: true
-	// Enum: [pending done]
-	Status *string `json:"status"`
 
 	// Task text
 	// Required: true
@@ -51,23 +36,11 @@ type Task struct {
 func (m *Task) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateAttempts(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateHints(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateID(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validateName(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateStatus(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -78,60 +51,6 @@ func (m *Task) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Task) validateAttempts(formats strfmt.Registry) error {
-
-	if err := validate.Required("attempts", "body", m.Attempts); err != nil {
-		return err
-	}
-
-	for i := 0; i < len(m.Attempts); i++ {
-		if swag.IsZero(m.Attempts[i]) { // not required
-			continue
-		}
-
-		if m.Attempts[i] != nil {
-			if err := m.Attempts[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("attempts" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("attempts" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
-func (m *Task) validateHints(formats strfmt.Registry) error {
-
-	if err := validate.Required("hints", "body", m.Hints); err != nil {
-		return err
-	}
-
-	for i := 0; i < len(m.Hints); i++ {
-		if swag.IsZero(m.Hints[i]) { // not required
-			continue
-		}
-
-		if m.Hints[i] != nil {
-			if err := m.Hints[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("hints" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("hints" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
 	return nil
 }
 
@@ -153,49 +72,6 @@ func (m *Task) validateName(formats strfmt.Registry) error {
 	return nil
 }
 
-var taskTypeStatusPropEnum []interface{}
-
-func init() {
-	var res []string
-	if err := json.Unmarshal([]byte(`["pending","done"]`), &res); err != nil {
-		panic(err)
-	}
-	for _, v := range res {
-		taskTypeStatusPropEnum = append(taskTypeStatusPropEnum, v)
-	}
-}
-
-const (
-
-	// TaskStatusPending captures enum value "pending"
-	TaskStatusPending string = "pending"
-
-	// TaskStatusDone captures enum value "done"
-	TaskStatusDone string = "done"
-)
-
-// prop value enum
-func (m *Task) validateStatusEnum(path, location string, value string) error {
-	if err := validate.EnumCase(path, location, value, taskTypeStatusPropEnum, true); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (m *Task) validateStatus(formats strfmt.Registry) error {
-
-	if err := validate.Required("status", "body", m.Status); err != nil {
-		return err
-	}
-
-	// value enum
-	if err := m.validateStatusEnum("status", "body", *m.Status); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func (m *Task) validateText(formats strfmt.Registry) error {
 
 	if err := validate.Required("text", "body", m.Text); err != nil {
@@ -205,71 +81,8 @@ func (m *Task) validateText(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validate this task based on the context it is used
+// ContextValidate validates this task based on context it is used
 func (m *Task) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.contextValidateAttempts(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.contextValidateHints(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *Task) contextValidateAttempts(ctx context.Context, formats strfmt.Registry) error {
-
-	for i := 0; i < len(m.Attempts); i++ {
-
-		if m.Attempts[i] != nil {
-
-			if swag.IsZero(m.Attempts[i]) { // not required
-				return nil
-			}
-
-			if err := m.Attempts[i].ContextValidate(ctx, formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("attempts" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("attempts" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
-func (m *Task) contextValidateHints(ctx context.Context, formats strfmt.Registry) error {
-
-	for i := 0; i < len(m.Hints); i++ {
-
-		if m.Hints[i] != nil {
-
-			if swag.IsZero(m.Hints[i]) { // not required
-				return nil
-			}
-
-			if err := m.Hints[i].ContextValidate(ctx, formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("hints" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("hints" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
 	return nil
 }
 

@@ -21,10 +21,6 @@ import (
 // swagger:model Tournament
 type Tournament struct {
 
-	// attempts
-	// Required: true
-	Attempts []*Attempt `json:"attempts"`
-
 	// Geographic coordinates
 	// Required: true
 	Coords *string `json:"coords"`
@@ -33,10 +29,6 @@ type Tournament struct {
 	// Required: true
 	// Max Length: 300
 	Description *string `json:"description"`
-
-	// hints
-	// Required: true
-	Hints []*Hint `json:"hints"`
 
 	// Tournament identifier
 	// Required: true
@@ -50,25 +42,21 @@ type Tournament struct {
 	// Required: true
 	// Enum: [in_progress done]
 	Status *string `json:"status"`
+
+	// tasks
+	// Required: true
+	Tasks []*TeamTask `json:"tasks"`
 }
 
 // Validate validates this tournament
 func (m *Tournament) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateAttempts(formats); err != nil {
-		res = append(res, err)
-	}
-
 	if err := m.validateCoords(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validateDescription(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateHints(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -84,36 +72,13 @@ func (m *Tournament) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := m.validateTasks(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *Tournament) validateAttempts(formats strfmt.Registry) error {
-
-	if err := validate.Required("attempts", "body", m.Attempts); err != nil {
-		return err
-	}
-
-	for i := 0; i < len(m.Attempts); i++ {
-		if swag.IsZero(m.Attempts[i]) { // not required
-			continue
-		}
-
-		if m.Attempts[i] != nil {
-			if err := m.Attempts[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("attempts" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("attempts" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
 	return nil
 }
 
@@ -134,33 +99,6 @@ func (m *Tournament) validateDescription(formats strfmt.Registry) error {
 
 	if err := validate.MaxLength("description", "body", *m.Description, 300); err != nil {
 		return err
-	}
-
-	return nil
-}
-
-func (m *Tournament) validateHints(formats strfmt.Registry) error {
-
-	if err := validate.Required("hints", "body", m.Hints); err != nil {
-		return err
-	}
-
-	for i := 0; i < len(m.Hints); i++ {
-		if swag.IsZero(m.Hints[i]) { // not required
-			continue
-		}
-
-		if m.Hints[i] != nil {
-			if err := m.Hints[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("hints" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("hints" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
 	}
 
 	return nil
@@ -227,39 +165,23 @@ func (m *Tournament) validateStatus(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validate this tournament based on the context it is used
-func (m *Tournament) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	var res []error
+func (m *Tournament) validateTasks(formats strfmt.Registry) error {
 
-	if err := m.contextValidateAttempts(ctx, formats); err != nil {
-		res = append(res, err)
+	if err := validate.Required("tasks", "body", m.Tasks); err != nil {
+		return err
 	}
 
-	if err := m.contextValidateHints(ctx, formats); err != nil {
-		res = append(res, err)
-	}
+	for i := 0; i < len(m.Tasks); i++ {
+		if swag.IsZero(m.Tasks[i]) { // not required
+			continue
+		}
 
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *Tournament) contextValidateAttempts(ctx context.Context, formats strfmt.Registry) error {
-
-	for i := 0; i < len(m.Attempts); i++ {
-
-		if m.Attempts[i] != nil {
-
-			if swag.IsZero(m.Attempts[i]) { // not required
-				return nil
-			}
-
-			if err := m.Attempts[i].ContextValidate(ctx, formats); err != nil {
+		if m.Tasks[i] != nil {
+			if err := m.Tasks[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("attempts" + "." + strconv.Itoa(i))
+					return ve.ValidateName("tasks" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("attempts" + "." + strconv.Itoa(i))
+					return ce.ValidateName("tasks" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -270,21 +192,35 @@ func (m *Tournament) contextValidateAttempts(ctx context.Context, formats strfmt
 	return nil
 }
 
-func (m *Tournament) contextValidateHints(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validate this tournament based on the context it is used
+func (m *Tournament) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
 
-	for i := 0; i < len(m.Hints); i++ {
+	if err := m.contextValidateTasks(ctx, formats); err != nil {
+		res = append(res, err)
+	}
 
-		if m.Hints[i] != nil {
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
 
-			if swag.IsZero(m.Hints[i]) { // not required
+func (m *Tournament) contextValidateTasks(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Tasks); i++ {
+
+		if m.Tasks[i] != nil {
+
+			if swag.IsZero(m.Tasks[i]) { // not required
 				return nil
 			}
 
-			if err := m.Hints[i].ContextValidate(ctx, formats); err != nil {
+			if err := m.Tasks[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("hints" + "." + strconv.Itoa(i))
+					return ve.ValidateName("tasks" + "." + strconv.Itoa(i))
 				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("hints" + "." + strconv.Itoa(i))
+					return ce.ValidateName("tasks" + "." + strconv.Itoa(i))
 				}
 				return err
 			}

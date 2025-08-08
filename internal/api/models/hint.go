@@ -26,10 +26,10 @@ type Hint struct {
 
 	// Hint status
 	// Required: true
-	// Enum: [closed open]
+	// Enum: [hidden open]
 	Status *string `json:"status"`
 
-	// Hint text, omitted when status is closed
+	// Hint text, omitted when status is hidden
 	Text *string `json:"text,omitempty"`
 }
 
@@ -64,7 +64,7 @@ var hintTypeStatusPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["closed","open"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["hidden","open"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -74,8 +74,8 @@ func init() {
 
 const (
 
-	// HintStatusClosed captures enum value "closed"
-	HintStatusClosed string = "closed"
+	// HintStatusHidden captures enum value "hidden"
+	HintStatusHidden string = "hidden"
 
 	// HintStatusOpen captures enum value "open"
 	HintStatusOpen string = "open"

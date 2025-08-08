@@ -32,6 +32,11 @@ type Attempt struct {
 	// Text of attempt
 	// Required: true
 	Text *string `json:"text"`
+
+	// Time of attempt
+	// Required: true
+	// Format: date-time
+	Time *strfmt.DateTime `json:"time"`
 }
 
 // Validate validates this attempt
@@ -47,6 +52,10 @@ func (m *Attempt) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateText(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTime(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -114,6 +123,19 @@ func (m *Attempt) validateStatus(formats strfmt.Registry) error {
 func (m *Attempt) validateText(formats strfmt.Registry) error {
 
 	if err := validate.Required("text", "body", m.Text); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *Attempt) validateTime(formats strfmt.Registry) error {
+
+	if err := validate.Required("time", "body", m.Time); err != nil {
+		return err
+	}
+
+	if err := validate.FormatOf("time", "body", "date-time", m.Time.String(), formats); err != nil {
 		return err
 	}
 

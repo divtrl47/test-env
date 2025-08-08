@@ -10,7 +10,12 @@ properties:
     type: string
     description: Attempt status
     enum: [pending, correct, incorrect]
+  time:
+    type: string
+    format: date-time
+    description: Time of attempt
 required:
   - id
   - text
   - status
+  - time

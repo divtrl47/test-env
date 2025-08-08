@@ -8,6 +8,7 @@ package models
 import (
 	"context"
 	"encoding/json"
+	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -20,25 +21,41 @@ import (
 // swagger:model TeamTask
 type TeamTask struct {
 
-	// Task name
+	// attempts
 	// Required: true
-	Name *string `json:"name"`
+	Attempts []*Attempt `json:"attempts"`
+
+	// hints
+	// Required: true
+	Hints []*Hint `json:"hints"`
 
 	// Task status for team
 	// Required: true
-	// Enum: [pending solved]
+	// Enum: [pending correct incorrect]
 	Status *string `json:"status"`
+
+	// task
+	// Required: true
+	Task *Task `json:"task"`
 }
 
 // Validate validates this team task
 func (m *TeamTask) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateName(formats); err != nil {
+	if err := m.validateAttempts(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateHints(formats); err != nil {
 		res = append(res, err)
 	}
 
 	if err := m.validateStatus(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateTask(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -48,10 +65,55 @@ func (m *TeamTask) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *TeamTask) validateName(formats strfmt.Registry) error {
+func (m *TeamTask) validateAttempts(formats strfmt.Registry) error {
 
-	if err := validate.Required("name", "body", m.Name); err != nil {
+	if err := validate.Required("attempts", "body", m.Attempts); err != nil {
 		return err
+	}
+
+	for i := 0; i < len(m.Attempts); i++ {
+		if swag.IsZero(m.Attempts[i]) { // not required
+			continue
+		}
+
+		if m.Attempts[i] != nil {
+			if err := m.Attempts[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("attempts" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("attempts" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *TeamTask) validateHints(formats strfmt.Registry) error {
+
+	if err := validate.Required("hints", "body", m.Hints); err != nil {
+		return err
+	}
+
+	for i := 0; i < len(m.Hints); i++ {
+		if swag.IsZero(m.Hints[i]) { // not required
+			continue
+		}
+
+		if m.Hints[i] != nil {
+			if err := m.Hints[i].Validate(formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("hints" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("hints" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil
@@ -61,7 +123,7 @@ var teamTaskTypeStatusPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["pending","solved"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["pending","correct","incorrect"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -74,8 +136,11 @@ const (
 	// TeamTaskStatusPending captures enum value "pending"
 	TeamTaskStatusPending string = "pending"
 
-	// TeamTaskStatusSolved captures enum value "solved"
-	TeamTaskStatusSolved string = "solved"
+	// TeamTaskStatusCorrect captures enum value "correct"
+	TeamTaskStatusCorrect string = "correct"
+
+	// TeamTaskStatusIncorrect captures enum value "incorrect"
+	TeamTaskStatusIncorrect string = "incorrect"
 )
 
 // prop value enum
@@ -100,8 +165,112 @@ func (m *TeamTask) validateStatus(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this team task based on context it is used
+func (m *TeamTask) validateTask(formats strfmt.Registry) error {
+
+	if err := validate.Required("task", "body", m.Task); err != nil {
+		return err
+	}
+
+	if m.Task != nil {
+		if err := m.Task.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("task")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("task")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this team task based on the context it is used
 func (m *TeamTask) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateAttempts(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateHints(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateTask(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *TeamTask) contextValidateAttempts(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Attempts); i++ {
+
+		if m.Attempts[i] != nil {
+
+			if swag.IsZero(m.Attempts[i]) { // not required
+				return nil
+			}
+
+			if err := m.Attempts[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("attempts" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("attempts" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *TeamTask) contextValidateHints(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Hints); i++ {
+
+		if m.Hints[i] != nil {
+
+			if swag.IsZero(m.Hints[i]) { // not required
+				return nil
+			}
+
+			if err := m.Hints[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("hints" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("hints" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
+	}
+
+	return nil
+}
+
+func (m *TeamTask) contextValidateTask(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Task != nil {
+
+		if err := m.Task.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("task")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("task")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

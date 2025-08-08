@@ -140,9 +140,9 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Task details",
+            "description": "Team task details",
             "schema": {
-              "$ref": "#/definitions/Task"
+              "$ref": "#/definitions/TeamTask"
             }
           },
           "401": {
@@ -201,6 +201,9 @@ func init() {
           },
           "404": {
             "$ref": "#/responses/NotFound"
+          },
+          "409": {
+            "$ref": "#/responses/TooManyAttempts"
           }
         }
       }
@@ -330,11 +333,14 @@ func init() {
     "TaskAnswerResponse": {
       "$ref": "components/schemas/TaskAnswerResponse.yaml"
     },
-    "Team": {
-      "$ref": "components/schemas/Team.yaml"
+    "TeamOverview": {
+      "$ref": "components/schemas/TeamOverview.yaml"
     },
     "TeamTask": {
       "$ref": "components/schemas/TeamTask.yaml"
+    },
+    "TeamTaskOverview": {
+      "$ref": "components/schemas/TeamTaskOverview.yaml"
     },
     "Tournament": {
       "$ref": "components/schemas/Tournament.yaml"
@@ -358,6 +364,12 @@ func init() {
     },
     "NotFound": {
       "description": "Resource not found",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "TooManyAttempts": {
+      "description": "Maximum attempts exceeded",
       "schema": {
         "$ref": "#/definitions/Error"
       }
@@ -526,9 +538,9 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Task details",
+            "description": "Team task details",
             "schema": {
-              "$ref": "#/definitions/Task"
+              "$ref": "#/definitions/TeamTask"
             }
           },
           "401": {
@@ -605,6 +617,12 @@ func init() {
           },
           "404": {
             "description": "Resource not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "409": {
+            "description": "Maximum attempts exceeded",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -733,7 +751,8 @@ func init() {
       "required": [
         "id",
         "text",
-        "status"
+        "status",
+        "time"
       ],
       "properties": {
         "id": {
@@ -752,6 +771,11 @@ func init() {
         "text": {
           "description": "Text of attempt",
           "type": "string"
+        },
+        "time": {
+          "description": "Time of attempt",
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
@@ -787,12 +811,12 @@ func init() {
           "description": "Hint status",
           "type": "string",
           "enum": [
-            "closed",
+            "hidden",
             "open"
           ]
         },
         "text": {
-          "description": "Hint text, omitted when status is closed",
+          "description": "Hint text, omitted when status is hidden",
           "type": "string",
           "x-nullable": true
         }
@@ -851,24 +875,9 @@ func init() {
       "required": [
         "id",
         "name",
-        "text",
-        "status",
-        "attempts",
-        "hints"
+        "text"
       ],
       "properties": {
-        "attempts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Attempt"
-          }
-        },
-        "hints": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Hint"
-          }
-        },
         "id": {
           "description": "Task identifier",
           "type": "integer"
@@ -876,14 +885,6 @@ func init() {
         "name": {
           "description": "Task name",
           "type": "string"
-        },
-        "status": {
-          "description": "Task status",
-          "type": "string",
-          "enum": [
-            "pending",
-            "done"
-          ]
         },
         "text": {
           "description": "Task text",
@@ -920,7 +921,7 @@ func init() {
         }
       }
     },
-    "Team": {
+    "TeamOverview": {
       "type": "object",
       "required": [
         "id",
@@ -959,12 +960,47 @@ func init() {
         "tasks": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/TeamTask"
+            "$ref": "#/definitions/TeamTaskOverview"
           }
         }
       }
     },
     "TeamTask": {
+      "type": "object",
+      "required": [
+        "task",
+        "status",
+        "attempts",
+        "hints"
+      ],
+      "properties": {
+        "attempts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Attempt"
+          }
+        },
+        "hints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Hint"
+          }
+        },
+        "status": {
+          "description": "Task status for team",
+          "type": "string",
+          "enum": [
+            "pending",
+            "correct",
+            "incorrect"
+          ]
+        },
+        "task": {
+          "$ref": "#/definitions/Task"
+        }
+      }
+    },
+    "TeamTaskOverview": {
       "type": "object",
       "required": [
         "name",
@@ -980,7 +1016,8 @@ func init() {
           "type": "string",
           "enum": [
             "pending",
-            "solved"
+            "correct",
+            "incorrect"
           ]
         }
       }
@@ -992,17 +1029,10 @@ func init() {
         "name",
         "coords",
         "description",
-        "attempts",
-        "hints",
+        "tasks",
         "status"
       ],
       "properties": {
-        "attempts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Attempt"
-          }
-        },
         "coords": {
           "description": "Geographic coordinates",
           "type": "string"
@@ -1011,12 +1041,6 @@ func init() {
           "description": "Tournament description",
           "type": "string",
           "maxLength": 300
-        },
-        "hints": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Hint"
-          }
         },
         "id": {
           "description": "Tournament identifier",
@@ -1033,6 +1057,12 @@ func init() {
             "in_progress",
             "done"
           ]
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TeamTask"
+          }
         }
       }
     },
@@ -1056,7 +1086,7 @@ func init() {
           "description": "Teams ordered by tournament results",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Team"
+            "$ref": "#/definitions/TeamOverview"
           }
         }
       }
@@ -1077,6 +1107,12 @@ func init() {
     },
     "NotFound": {
       "description": "Resource not found",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "TooManyAttempts": {
+      "description": "Maximum attempts exceeded",
       "schema": {
         "$ref": "#/definitions/Error"
       }

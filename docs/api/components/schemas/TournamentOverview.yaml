@@ -10,7 +10,7 @@ properties:
     type: array
     description: Teams ordered by tournament results
     items:
-      $ref: 'Team.yaml'
+      $ref: 'TeamOverview.yaml'
 required:
   - id
   - name

@@ -6,11 +6,11 @@ properties:
   text:
     type: string
     x-nullable: true
-    description: Hint text, omitted when status is closed
+    description: Hint text, omitted when status is hidden
   status:
     type: string
     description: Hint status
-    enum: [closed, open]
+    enum: [hidden, open]
 required:
   - id
   - status

@@ -13,14 +13,10 @@ properties:
     type: string
     description: Tournament description
     maxLength: 300
-  attempts:
+  tasks:
     type: array
     items:
-      $ref: 'Attempt.yaml'
-  hints:
-    type: array
-    items:
-      $ref: 'Hint.yaml'
+      $ref: 'TeamTask.yaml'
   status:
     type: string
     description: Current tournament status
@@ -30,6 +26,5 @@ required:
   - name
   - coords
   - description
-  - attempts
-  - hints
+  - tasks
   - status

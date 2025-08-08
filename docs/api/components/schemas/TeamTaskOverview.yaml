@@ -1,15 +1,12 @@
 type: object
 properties:
-  id:
-    type: integer
-    description: Task identifier
   name:
     type: string
     description: Task name
-  text:
+  status:
     type: string
-    description: Task text
+    description: Task status for team
+    enum: [pending, correct, incorrect]
 required:
-  - id
   - name
-  - text
+  - status

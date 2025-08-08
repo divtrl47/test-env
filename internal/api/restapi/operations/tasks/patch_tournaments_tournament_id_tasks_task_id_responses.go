@@ -237,3 +237,48 @@ func (o *PatchTournamentsTournamentIDTasksTaskIDNotFound) WriteResponse(rw http.
 		}
 	}
 }
+
+// PatchTournamentsTournamentIDTasksTaskIDConflictCode is the HTTP code returned for type PatchTournamentsTournamentIDTasksTaskIDConflict
+const PatchTournamentsTournamentIDTasksTaskIDConflictCode int = 409
+
+/*
+PatchTournamentsTournamentIDTasksTaskIDConflict Maximum attempts exceeded
+
+swagger:response patchTournamentsTournamentIdTasksTaskIdConflict
+*/
+type PatchTournamentsTournamentIDTasksTaskIDConflict struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewPatchTournamentsTournamentIDTasksTaskIDConflict creates PatchTournamentsTournamentIDTasksTaskIDConflict with default headers values
+func NewPatchTournamentsTournamentIDTasksTaskIDConflict() *PatchTournamentsTournamentIDTasksTaskIDConflict {
+
+	return &PatchTournamentsTournamentIDTasksTaskIDConflict{}
+}
+
+// WithPayload adds the payload to the patch tournaments tournament Id tasks task Id conflict response
+func (o *PatchTournamentsTournamentIDTasksTaskIDConflict) WithPayload(payload *models.Error) *PatchTournamentsTournamentIDTasksTaskIDConflict {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the patch tournaments tournament Id tasks task Id conflict response
+func (o *PatchTournamentsTournamentIDTasksTaskIDConflict) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *PatchTournamentsTournamentIDTasksTaskIDConflict) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(409)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

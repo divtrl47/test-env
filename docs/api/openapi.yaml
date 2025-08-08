@@ -63,9 +63,9 @@ paths:
           type: integer
       responses:
         '200':
-          description: Task details
+          description: Team task details
           schema:
-            $ref: '#/definitions/Task'
+            $ref: '#/definitions/TeamTask'
         '401':
           $ref: '#/responses/Unauthorized'
         '403':
@@ -96,6 +96,8 @@ paths:
             $ref: '#/definitions/TaskAnswerResponse'
         '400':
           $ref: '#/responses/BadRequest'
+        '409':
+          $ref: '#/responses/TooManyAttempts'
         '401':
           $ref: '#/responses/Unauthorized'
         '403':
@@ -196,8 +198,10 @@ definitions:
     $ref: 'components/schemas/HintOpenRequest.yaml'
   TeamTask:
     $ref: 'components/schemas/TeamTask.yaml'
-  Team:
-    $ref: 'components/schemas/Team.yaml'
+  TeamTaskOverview:
+    $ref: 'components/schemas/TeamTaskOverview.yaml'
+  TeamOverview:
+    $ref: 'components/schemas/TeamOverview.yaml'
   Task:
     $ref: 'components/schemas/Task.yaml'
   TournamentOverview:
@@ -217,6 +221,10 @@ responses:
       $ref: '#/definitions/Error'
   NotFound:
     description: Resource not found
+    schema:
+      $ref: '#/definitions/Error'
+  TooManyAttempts:
+    description: Maximum attempts exceeded
     schema:
       $ref: '#/definitions/Error'
 tags:
