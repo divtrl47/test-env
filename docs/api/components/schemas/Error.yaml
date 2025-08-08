@@ -1,0 +1,11 @@
+type: object
+properties:
+  code:
+    type: integer
+    description: Application-specific error code
+  message:
+    type: string
+    description: Human readable error description
+required:
+  - code
+  - message

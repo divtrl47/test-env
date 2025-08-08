@@ -1,0 +1,8 @@
+type: object
+properties:
+  status:
+    type: string
+    description: Result of attempt
+    enum: [correct, incorrect]
+required:
+  - status

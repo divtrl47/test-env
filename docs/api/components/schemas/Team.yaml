@@ -1,0 +1,32 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Team identifier
+  name:
+    type: string
+    description: Team name
+  login:
+    type: string
+    description: Login used by the team
+  tasks:
+    type: array
+    items:
+      $ref: '#/components/schemas/TeamTask'
+  completed:
+    type: integer
+    description: Number of completed tasks
+  place:
+    type: integer
+    description: Team place in tournament
+  penalty:
+    type: integer
+    description: Penalty time in seconds
+required:
+  - id
+  - name
+  - login
+  - tasks
+  - completed
+  - place
+  - penalty

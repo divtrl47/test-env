@@ -1,0 +1,8 @@
+type: object
+properties:
+  answer:
+    type: string
+    description: User submitted answer
+    minLength: 1
+required:
+  - answer

@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Attempt identifier
+  text:
+    type: string
+    description: Text of attempt
+  status:
+    type: string
+    description: Attempt status
+    enum: [pending, correct, incorrect]
+required:
+  - id
+  - text
+  - status
