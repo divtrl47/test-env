@@ -19,17 +19,15 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginRequest'
-      responses:
-        '200':
-          description: Successful authentication
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+        responses:
+          '200':
+            description: Successful authentication
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/LoginResponse'
+          '400':
+            $ref: '#/components/responses/BadRequest'
   /tournaments/{tournamentId}/:
     get:
       tags: [tournaments]
@@ -40,15 +38,17 @@ paths:
           required: true
           schema:
             type: integer
-      responses:
-        '200':
-          description: Tournament details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Tournament'
-        '403':
-          $ref: '#/components/responses/Forbidden'
+        responses:
+          '200':
+            description: Tournament details
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Tournament'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '403':
+            $ref: '#/components/responses/Forbidden'
   /tournaments/{tournamentId}/tasks/{taskId}:
     get:
       tags: [tasks]
@@ -64,17 +64,19 @@ paths:
           required: true
           schema:
             type: integer
-      responses:
-        '200':
-          description: Task details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Task'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        responses:
+          '200':
+            description: Task details
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Task'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '403':
+            $ref: '#/components/responses/Forbidden'
+          '404':
+            $ref: '#/components/responses/NotFound'
     patch:
       tags: [tasks]
       summary: Submit answer for task
@@ -95,19 +97,21 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TaskAnswerRequest'
-      responses:
-        '200':
-          description: Answer processed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaskAnswerResponse'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        responses:
+          '200':
+            description: Answer processed
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/TaskAnswerResponse'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '400':
+            $ref: '#/components/responses/BadRequest'
+          '403':
+            $ref: '#/components/responses/Forbidden'
+          '404':
+            $ref: '#/components/responses/NotFound'
   /tournaments/{tournamentId}/tasks/{taskId}/hints/{hintId}:
     get:
       tags: [hints]
@@ -128,17 +132,19 @@ paths:
           required: true
           schema:
             type: integer
-      responses:
-        '200':
-          description: Hint details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Hint'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        responses:
+          '200':
+            description: Hint details
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Hint'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '403':
+            $ref: '#/components/responses/Forbidden'
+          '404':
+            $ref: '#/components/responses/NotFound'
     patch:
       tags: [hints]
       summary: Open hint for task
@@ -164,17 +170,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/HintOpenRequest'
-      responses:
-        '200':
-          description: Hint opened
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Hint'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
+        responses:
+          '200':
+            description: Hint opened
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Hint'
+          '401':
+            $ref: '#/components/responses/Unauthorized'
+          '403':
+            $ref: '#/components/responses/Forbidden'
+          '404':
+            $ref: '#/components/responses/NotFound'
   /tournaments:
     get:
       tags: [tournaments]
@@ -186,6 +194,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TournamentOverview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/Forbidden'
 components:
