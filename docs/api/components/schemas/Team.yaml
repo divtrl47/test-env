@@ -1,0 +1,16 @@
+# Team schema containing team info and task progress
+
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+  name:
+    type: string
+  tasks:
+    type: array
+    items:
+      $ref: './TeamTask.yaml'
+required:
+  - id
+  - name

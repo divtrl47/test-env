@@ -1,0 +1,33 @@
+# Task schema with immutable fields
+# describes a task with id, name, text, hints, and limits
+# using OpenAPI 3.0 schema syntax
+
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    readOnly: true
+  name:
+    type: string
+    readOnly: true
+  text:
+    type: string
+    readOnly: true
+  hints:
+    type: array
+    readOnly: true
+    items:
+      type: string
+  timeLimit:
+    type: integer
+    description: Time limit in seconds
+    readOnly: true
+  memoryLimit:
+    type: integer
+    description: Memory limit in megabytes
+    readOnly: true
+required:
+  - id
+  - name
+  - text
