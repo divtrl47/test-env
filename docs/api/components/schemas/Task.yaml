@@ -1,0 +1,30 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Task identifier
+  name:
+    type: string
+    description: Task name
+  text:
+    type: string
+    description: Task text
+  status:
+    type: string
+    description: Task status
+    enum: [pending, done]
+  attempts:
+    type: array
+    items:
+      $ref: 'Attempt.yaml'
+  hints:
+    type: array
+    items:
+      $ref: 'Hint.yaml'
+required:
+  - id
+  - name
+  - text
+  - status
+  - attempts
+  - hints

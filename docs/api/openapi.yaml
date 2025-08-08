@@ -1,0 +1,262 @@
+openapi: 3.1.0
+info:
+  title: Tournament API
+  version: 1.0.0
+  description: API for tournament management and participation
+servers:
+  - url: https://api.example.com
+    description: Production server
+  - url: http://localhost:8080
+    description: Development server
+paths:
+  /login:
+    post:
+      tags: [auth]
+      summary: Authenticate user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful authentication
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /tournaments/{tournamentId}/:
+    get:
+      tags: [tournaments]
+      summary: Get tournament details
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Tournament details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tournament'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+  /tournaments/{tournamentId}/tasks/{taskId}:
+    get:
+      tags: [tasks]
+      summary: Get task details
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Task details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Task'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [tasks]
+      summary: Submit answer for task
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskAnswerRequest'
+      responses:
+        '200':
+          description: Answer processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskAnswerResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /tournaments/{tournamentId}/tasks/{taskId}/hints/{hintId}:
+    get:
+      tags: [hints]
+      summary: Get hint details
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: hintId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Hint details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [hints]
+      summary: Open hint for task
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: taskId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: hintId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HintOpenRequest'
+      responses:
+        '200':
+          description: Hint opened
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hint'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /tournaments:
+    get:
+      tags: [tournaments]
+      summary: Get active tournament and leaderboard
+      responses:
+        '200':
+          description: Tournament leaderboard
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TournamentOverview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+components:
+  schemas:
+    LoginRequest:
+      $ref: 'components/schemas/LoginRequest.yaml'
+    LoginResponse:
+      $ref: 'components/schemas/LoginResponse.yaml'
+    Error:
+      $ref: 'components/schemas/Error.yaml'
+    Attempt:
+      $ref: 'components/schemas/Attempt.yaml'
+    Hint:
+      $ref: 'components/schemas/Hint.yaml'
+    Tournament:
+      $ref: 'components/schemas/Tournament.yaml'
+    TaskAnswerRequest:
+      $ref: 'components/schemas/TaskAnswerRequest.yaml'
+    TaskAnswerResponse:
+      $ref: 'components/schemas/TaskAnswerResponse.yaml'
+    HintOpenRequest:
+      $ref: 'components/schemas/HintOpenRequest.yaml'
+    TeamTask:
+      $ref: 'components/schemas/TeamTask.yaml'
+    Team:
+      $ref: 'components/schemas/Team.yaml'
+    Task:
+      $ref: 'components/schemas/Task.yaml'
+    TournamentOverview:
+      $ref: 'components/schemas/TournamentOverview.yaml'
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+tags:
+  - name: auth
+    description: Authentication and authorization
+  - name: tournaments
+    description: Tournament operations
+  - name: tasks
+    description: Task operations
+  - name: hints
+    description: Hint operations
