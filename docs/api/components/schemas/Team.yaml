@@ -12,7 +12,7 @@ properties:
   tasks:
     type: array
     items:
-      $ref: '#/components/schemas/TeamTask'
+      $ref: 'TeamTask.yaml'
   completed:
     type: integer
     description: Number of completed tasks

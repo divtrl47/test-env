@@ -10,7 +10,7 @@ properties:
     type: array
     description: Teams ordered by tournament results
     items:
-      $ref: '#/components/schemas/Team'
+      $ref: 'Team.yaml'
 required:
   - id
   - name

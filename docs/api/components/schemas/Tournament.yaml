@@ -16,11 +16,11 @@ properties:
   attempts:
     type: array
     items:
-      $ref: '#/components/schemas/Attempt'
+      $ref: 'Attempt.yaml'
   hints:
     type: array
     items:
-      $ref: '#/components/schemas/Hint'
+      $ref: 'Hint.yaml'
   status:
     type: string
     description: Current tournament status
