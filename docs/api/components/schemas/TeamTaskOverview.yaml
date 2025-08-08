@@ -1,0 +1,12 @@
+type: object
+properties:
+  name:
+    type: string
+    description: Task name
+  status:
+    type: string
+    description: Task status for team
+    enum: [pending, correct, incorrect]
+required:
+  - name
+  - status

@@ -1,0 +1,22 @@
+type: object
+properties:
+  task:
+    $ref: 'Task.yaml'
+    description: Shared task data
+  status:
+    type: string
+    description: Task status for team
+    enum: [pending, correct, incorrect]
+  attempts:
+    type: array
+    items:
+      $ref: 'Attempt.yaml'
+  hints:
+    type: array
+    items:
+      $ref: 'Hint.yaml'
+required:
+  - task
+  - status
+  - attempts
+  - hints

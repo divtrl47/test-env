@@ -1,0 +1,14 @@
+type: object
+properties:
+  login:
+    type: string
+    description: User login
+    minLength: 1
+  password:
+    type: string
+    format: password
+    description: User password
+    minLength: 1
+required:
+  - login
+  - password

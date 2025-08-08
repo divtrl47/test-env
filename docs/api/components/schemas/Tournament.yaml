@@ -1,0 +1,30 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Tournament identifier
+  name:
+    type: string
+    description: Tournament name
+  coords:
+    type: string
+    description: Geographic coordinates
+  description:
+    type: string
+    description: Tournament description
+    maxLength: 300
+  tasks:
+    type: array
+    items:
+      $ref: 'TeamTask.yaml'
+  status:
+    type: string
+    description: Current tournament status
+    enum: [in_progress, done]
+required:
+  - id
+  - name
+  - coords
+  - description
+  - tasks
+  - status

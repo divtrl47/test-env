@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Tournament identifier
+  name:
+    type: string
+    description: Tournament name
+  teams:
+    type: array
+    description: Teams ordered by tournament results
+    items:
+      $ref: 'TeamOverview.yaml'
+required:
+  - id
+  - name
+  - teams

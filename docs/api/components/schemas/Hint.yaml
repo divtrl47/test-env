@@ -1,0 +1,16 @@
+type: object
+properties:
+  id:
+    type: integer
+    description: Hint identifier
+  text:
+    type: string
+    x-nullable: true
+    description: Hint text, omitted when status is hidden
+  status:
+    type: string
+    description: Hint status
+    enum: [hidden, open]
+required:
+  - id
+  - status
