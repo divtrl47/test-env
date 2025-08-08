@@ -1,0 +1,8 @@
+type: object
+properties:
+  tournament_id:
+    type: integer
+    format: int64
+    description: Identifier of available tournament
+required:
+  - tournament_id
