@@ -3,14 +3,14 @@
 This project provides a small Kafka cluster using Docker Compose and simple Go clients for producing and consuming messages. The cluster runs Kafka in KRaft mode without ZooKeeper.
 
 ## Prerequisites
-- Docker and Docker Compose
+- Docker with Compose plugin
 - Go 1.24+
 
 ## Running the cluster
 
 Start the brokers:
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 This launches three Kafka brokers listening on local ports `19092`, `19093` and `19094`.
 
@@ -27,5 +27,5 @@ produced messages. The client will keep running until you press `Ctrl+C`.
 
 Stop the cluster with:
 ```bash
-docker-compose down
+docker compose down
 ```
